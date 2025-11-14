@@ -61,7 +61,6 @@ jobs:
           git checkout -b "${BRANCH}"
           git add package.json
           git commit -m "chore(release): v${NEWVER}" || echo "no changes to commit"
-          git push origin "${BRANCH}"
 
       - name: Create Pull Request for version bump
         if: ${{ steps.determine.outputs.bump != '' }}
