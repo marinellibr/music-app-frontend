@@ -22,8 +22,12 @@
     "start": "react-scripts start",
     "dev": "PORT=3100 react-scripts start",
     "build": "react-scripts build",
+    "build:prod": "cross-env NODE_ENV=production react-scripts build",
+    "build:prod:win": "set \"NODE_ENV=production\" && react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build:prod",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -43,5 +47,10 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:3000"
+  "proxy": "http://localhost:3000",
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "gh-pages": "^6.3.0"
+  },
+  "homepage": "https://marinellibr.github.io/music-app-frontend"
 }
