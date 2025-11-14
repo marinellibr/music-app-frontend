@@ -27,7 +27,7 @@ jobs:
       - name: Determine bump type
         id: determine
         run: |
-          node -e "const fs=require('fs');const ev=JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH,'utf8'));let bump='';if(process.env.GITHUB_EVENT_NAME==='pull_request'){if(ev.pull_request && ev.pull_request.merged && ev.pull_request.base && ev.pull_request.base.ref==='main') bump='major';} else {const commits=ev.commits||[];if(commits.some(c=>/^feat:/.test(c.message))) bump='minor'; else if(commits.some(c=>/^fix:/.test(c.message))) bump='patch';} fs.appendFileSync(process.env.GITHUB_OUTPUT, 'bump='+bump+"\n");console.log('bump='+bump);"
+          node scripts/determine-bump.js
 
       - name: Show bump decision
         run: echo "Bump=${{ steps.determine.outputs.bump }}"
@@ -50,15 +50,28 @@ jobs:
         run: |
           node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('package.json','utf8'));const sem=p.version.split('.').map(Number);if(process.env.BUMP==='major'){sem[0]+=1;sem[1]=0;sem[2]=0;}else if(process.env.BUMP==='minor'){sem[1]+=1;sem[2]=0;}else if(process.env.BUMP==='patch'){sem[2]+=1;}p.version=sem.join('.');fs.writeFileSync('package.json',JSON.stringify(p,null,2)+'\n');console.log('new-version:'+p.version);"
 
-      - name: Commit and push version bump
+      - name: Prepare version branch
+        id: prepare-version
         if: ${{ steps.determine.outputs.bump != '' }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          BRANCH=${GITHUB_REF#refs/heads/}
-          git add package.json
           NEWVER=$(node -p "require('./package.json').version")
+          BRANCH="version-bump/v${NEWVER}"
+          echo "version=$NEWVER" >> $GITHUB_OUTPUT
+          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+          git checkout -b "${BRANCH}"
+          git add package.json
           git commit -m "chore(release): v${NEWVER}" || echo "no changes to commit"
-          git tag -a "v${NEWVER}" -m "v${NEWVER}" || echo "tag exists"
-          git push origin "HEAD:${BRANCH}"
-          git push origin --tags || true
+          git push origin "${BRANCH}"
+
+      - name: Create Pull Request for version bump
+        if: ${{ steps.determine.outputs.bump != '' }}
+        uses: peter-evans/create-pull-request@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore(release): v${{ steps.prepare-version.outputs.version }}"
+          branch: ${{ steps.prepare-version.outputs.branch }}
+          base: main
+          title: "chore(release): v${{ steps.prepare-version.outputs.version }}"
+          body: |
+            Automated version bump to v${{ steps.prepare-version.outputs.version }}
+            - Bump reason: ${{ steps.determine.outputs.bump }}
