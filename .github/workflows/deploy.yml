@@ -35,7 +35,7 @@ jobs:
       - name: Deploy to GitHub Pages
         run: npx gh-pages -d build --repo "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
 
-      - name: Output GitHub Pages URL
+      - name: Success Output GitHub Pages URL
         run: |
           REPO="${{ github.repository }}"
           OWNER="${REPO%/*}"
