@@ -34,3 +34,16 @@ jobs:
 
       - name: Deploy to GitHub Pages
         run: npx gh-pages -d build --repo "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+
+      - name: Output GitHub Pages URL
+        run: |
+          REPO="${{ github.repository }}"
+          OWNER="${REPO%/*}"
+          NAME="${REPO#*/}"
+          if [[ "$NAME" == *.github.io ]]; then
+            URL="https://$NAME"
+          else
+            URL="https://$OWNER.github.io/$NAME"
+          fi
+          echo "GitHub Pages URL: $URL"
+          echo "pages_url=$URL" >> $GITHUB_OUTPUT
