@@ -38,7 +38,6 @@ const App: React.FC = () => {
           display: "flex",
           justifyContent: "center",
           gap: 24,
-          backgroundColor: "#adadadff",
           borderTop: "1px solid rgba(255,255,255,0.1)",
           zIndex: 1000,
         }}
