@@ -17,6 +17,7 @@ export const UserMock: User = {
       mediaId: "2lTm559tuIvatlT1u0JYG2",
       createdAt: "2025-11-13T03:02:00.000Z",
       rating: 9.2,
+      liked: true,
     },
     {
       content: "Esse álbum é simplesmente incrível!",
@@ -24,6 +25,7 @@ export const UserMock: User = {
       mediaId: "5ht7ItJgpBH7W6vJ5BqpPr",
       createdAt: "2025-11-13T03:10:00.000Z",
       rating: 8.7,
+      liked: false,
     },
   ],
 };

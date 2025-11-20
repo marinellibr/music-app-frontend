@@ -17,4 +17,5 @@ export interface Post {
   mediaId: string;
   createdAt: string;
   rating: number;
+  liked: boolean;
 }

@@ -1,0 +1,68 @@
+.posts-container {
+  display: flex;
+  flex-direction: column;
+  /* gap: 1.5rem; */
+}
+
+.post-card {
+  display: flex;
+  color: #242424;
+  overflow: hidden;
+  padding: 0.5rem;
+  align-items: flex-start;
+  gap: 0.5rem;
+
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.post-cover {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+.post-info {
+  flex: 1;
+}
+
+.post-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.post-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+  text-decoration: underline;
+  max-width: 270px;
+}
+
+.post-rating {
+  background-color: #a0f0b1;
+  color: #000;
+  font-weight: 700;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+}
+
+.post-artist-year {
+  font-size: 0.9rem;
+  color: #aaa;
+  margin: 0.25rem 0 0.5rem 0;
+}
+
+.post-content {
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.loading {
+  color: #fff;
+  font-size: 1.1rem;
+  text-align: center;
+  padding: 2rem;
+}

@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
 import Profile from "./pages/profile/profile";
 import "./App.css";
+import spotifyService from "./services/spotifyService";
 
 function Search() {
   return (
@@ -22,14 +23,24 @@ function Review() {
 }
 
 const App: React.FC = () => {
+  useEffect(() => {
+    spotifyService.init();
+  }, []);
   return (
     <BrowserRouter>
       <nav
         style={{
-          padding: 12,
+          position: "fixed",
+          bottom: 0,
+          left: 0,
+          width: "100%",
+          padding: "12px 0",
           display: "flex",
-          gap: 12,
-          borderBottom: "1px solid rgba(255,255,255,0.05)",
+          justifyContent: "center",
+          gap: 24,
+          backgroundColor: "#adadadff",
+          borderTop: "1px solid rgba(255,255,255,0.1)",
+          zIndex: 1000,
         }}
       >
         <Link to="/profile">Profile</Link>
