@@ -94,9 +94,9 @@ export default function PostComponent({ posts }: Props) {
             </p>
             <p className="post-content">{post.content || ""}</p>
           </div>
-          <div className="posts-breathing"></div>
         </div>
       ))}
+      <div className="posts-breathing"></div>
     </div>
   );
 }

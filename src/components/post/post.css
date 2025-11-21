@@ -8,7 +8,8 @@
   display: flex;
   color: #242424;
   overflow: hidden;
-  padding: 0.5rem;
+  padding-inline: 1rem;
+  padding-block: 0.5rem;
   align-items: flex-start;
   gap: 0.5rem;
 

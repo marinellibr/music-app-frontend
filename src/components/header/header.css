@@ -1,0 +1,36 @@
+.header {
+  height: 40px;
+  width: calc(100vw - 24px);
+  border-bottom: 1px solid #d9d9d9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+}
+
+.header-left,
+.header-right {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.header-left img,
+.header-right img {
+  height: 24px;
+  width: 24px;
+}
+
+.header-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.header-center h1 {
+  font-size: 16px;
+  font-weight: bold;
+  pointer-events: none;
+}
