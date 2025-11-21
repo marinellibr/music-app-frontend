@@ -1,0 +1,24 @@
+.shimmer-container {
+  display: inline-block;
+  background-color: #3a3a3a;
+  background-image: linear-gradient(
+    to right,
+    #3a3a3a 0%,
+    #555555 50%,
+    #3a3a3a 100%
+  );
+  background-repeat: no-repeat;
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear forwards;
+  overflow: hidden;
+  opacity: 0.5;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

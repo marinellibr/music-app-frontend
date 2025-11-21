@@ -5,6 +5,7 @@ import "./App.css";
 import spotifyService from "./services/spotifyService";
 import Search from "./pages/search/search";
 import Review from "./pages/review/review";
+import Error from "./pages/error/error";
 
 const App: React.FC = () => {
   useEffect(() => {
@@ -32,6 +33,7 @@ const App: React.FC = () => {
       </nav>
 
       <Routes>
+        <Route path="/error" element={<Error />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/search" element={<Search />} />
         <Route path="/review/:media/:id?" element={<Review />} />

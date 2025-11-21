@@ -3,14 +3,44 @@ import "./profile.css";
 import { User } from "../../models/user.model";
 import PostComponent from "../../components/post/post";
 import { getUserById } from "../../services/userService";
+import Shimmer from "../../components/shimmer/shimmer";
+
+function ProfileSkeleton() {
+  return (
+    <div className="profile--container">
+      <section className="profile--header">
+        <Shimmer width={96} height={96} radius={48} />
+        <div className="profile--info">
+          <Shimmer width={120} height={19} radius={4} />
+          <Shimmer width={180} height={16} radius={4} />
+
+          <div>
+            <Shimmer width={200} height={76} radius={4} />
+          </div>
+
+          <div className="profile--stats">
+            <Shimmer width={50} height={36} radius={4} />
+            <Shimmer width={50} height={36} radius={4} />
+            <Shimmer width={50} height={36} radius={4} />
+          </div>
+        </div>
+      </section>
+      <section className="profile--tabs">
+        <div className="profile--tab">
+          <Shimmer width={60} height={16} radius={4} />
+        </div>
+      </section>
+    </div>
+  );
+}
 
 export default function Profile() {
   const [user, setUser] = useState<User | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const id = "691f7a7f249f12125fd1b4f2";
-    // const id = "691555322217fbbfe1c7677e";
+    // const id = "691f7a7f249f12125fd1b4f2"; //Stan
+    const id = "6920a600249f12125fd1b4f3"; //Kyle
 
     try {
       localStorage.setItem("userId", id);
@@ -44,19 +74,14 @@ export default function Profile() {
   }, []);
 
   if (!user) {
-    return (
-      <div className="profile--container">
-        <section className="profile--header">
-          <div className="profile--info">
-            {error ? (
-              <div className="error">Error: {error}</div>
-            ) : (
-              <div>Loading...</div>
-            )}
-          </div>
-        </section>
-      </div>
-    );
+    if (error) {
+      return (
+        <div className="profile--container">
+          <div className="error">Error: {error}</div>
+        </div>
+      );
+    }
+    return <ProfileSkeleton />;
   }
 
   return (
