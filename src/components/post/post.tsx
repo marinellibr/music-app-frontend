@@ -2,9 +2,38 @@ import { useEffect, useState } from "react";
 import { Post } from "../../models/user.model";
 import { Media } from "../../models/media.model";
 import { loadPostsWithMediaDetails } from "../../services/userService";
-
 import heartFilled from "../../assets/svg/heartFilled.svg";
 import "./post.css";
+import Shimmer from "../shimmer/shimmer";
+
+function PostSkeleton() {
+  return (
+    <div className="posts-container">
+      {Array.from({ length: 3 }).map((_, index) => (
+        <div key={index} className="post-card">
+          <Shimmer width={40} height={40} radius={2} />
+          <div className="post-info">
+            <div className="post-header">
+              <Shimmer width={160} height={18} radius={4} />
+              <div className="post-icons">
+                <Shimmer width={40} height={22} radius={12} />
+              </div>
+            </div>
+            <div style={{ marginTop: "6px", marginBottom: "8px" }}>
+              <Shimmer width={120} height={14} radius={4} />
+            </div>
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "4px" }}
+            >
+              <Shimmer width={280} height={14} radius={4} />
+              <Shimmer width={200} height={14} radius={4} />
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 interface Props {
   posts: Post[];
@@ -25,7 +54,6 @@ export default function PostComponent({ posts }: Props) {
       setLoading(true);
       try {
         const results = await loadPostsWithMediaDetails(posts);
-
         setMediaPosts(results);
       } catch (err) {
         console.error("Error fetching posts with media details: ", err);
@@ -38,7 +66,7 @@ export default function PostComponent({ posts }: Props) {
     loadMedia();
   }, [posts]);
 
-  if (loading) return <div>Loading posts...</div>;
+  if (loading) return <PostSkeleton />;
 
   return (
     <div className="posts-container">
