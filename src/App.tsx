@@ -51,7 +51,7 @@ const App: React.FC = () => {
         <Route path="/error" element={<Error />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/search" element={<Search />} />
-        <Route path="/review/:media/:id?" element={<Review />} />
+        <Route path="/review/:media?/:id?" element={<Review />} />
         <Route path=" " element={<Navigate to="/profile" replace />} />
         <Route path="" element={<Navigate to="/profile" replace />} />
         <Route

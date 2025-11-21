@@ -71,6 +71,8 @@ export default function Review() {
   const [userId, setUserId] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const isCreatingWithoutId = !id;
+
   useEffect(() => {
     try {
       const storedUserId = localStorage.getItem("userId");
@@ -97,18 +99,18 @@ export default function Review() {
     return dateString.substring(0, 4);
   };
 
-  const handleRatingChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRating(parseFloat(event.target.value));
-  };
-
-  const handleCommentChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    setComment(event.target.value);
+  const handleRatingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (isCreatingWithoutId) return;
+    setRating(parseFloat(e.target.value));
   };
 
   const handleFavoriteToggle = () => {
+    if (isCreatingWithoutId) return;
     setIsFavorite((prev) => !prev);
+  };
+
+  const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setComment(e.target.value);
   };
 
   const handleSubmit = async () => {
@@ -136,10 +138,6 @@ export default function Review() {
 
   const remainingChars = 144 - comment.length;
 
-  if (!selectedTrack) {
-    return <ReviewSkeleton />;
-  }
-
   return (
     <div>
       <Header
@@ -147,24 +145,41 @@ export default function Review() {
         iconLeft={arrowLeft}
         iconRight={confirm}
         actionIconLeft={() => navigate(-1)}
-        actionIconRight={handleSubmit}
+        actionIconRight={isCreatingWithoutId ? undefined : handleSubmit}
       />
 
       <div className="review-container">
         <div className="media-info">
-          <h1>{selectedTrack?.name}</h1>
-          <span>
-            {selectedTrack?.artists
-              ?.map((artist: any) => artist.name)
-              .join(", ")}
-          </span>{" "}
-          • <span>{getYear(selectedTrack?.album?.release_date)}</span>
+          <h1>{selectedTrack?.name || "choose a track"}</h1>
+          {selectedTrack ? (
+            <span>
+              {selectedTrack?.artists
+                ?.map((artist: any) => artist.name)
+                .join(", ")}{" "}
+              • {getYear(selectedTrack?.album?.release_date)}
+            </span>
+          ) : (
+            <span style={{ color: "#d9d9d9" }}>tap the box below</span>
+          )}
         </div>
 
-        <img
-          src={selectedTrack?.album?.images[0]?.url}
-          alt={selectedTrack?.name}
-        />
+        {selectedTrack ? (
+          <img
+            src={selectedTrack?.album?.images[0]?.url}
+            alt={selectedTrack?.name}
+          />
+        ) : (
+          <div
+            style={{
+              width: 172,
+              height: 172,
+              backgroundColor: "#d9d9d9",
+              borderRadius: 8,
+              cursor: "pointer",
+            }}
+            onClick={() => navigate("/search")}
+          />
+        )}
 
         <div className="rating-selector">
           <div className="rating-infos">
@@ -177,7 +192,10 @@ export default function Review() {
                 src={isFavorite ? heartFilled : heartEmpty}
                 alt="Like"
                 onClick={handleFavoriteToggle}
-                style={{ cursor: "pointer" }}
+                style={{
+                  cursor: isCreatingWithoutId ? "default" : "pointer",
+                  opacity: isCreatingWithoutId ? 0.4 : 1,
+                }}
               />
             </div>
           </div>
@@ -190,6 +208,7 @@ export default function Review() {
             value={rating}
             onChange={handleRatingChange}
             className="rating-input"
+            disabled={isCreatingWithoutId}
           />
 
           <div className="rating-labels">
