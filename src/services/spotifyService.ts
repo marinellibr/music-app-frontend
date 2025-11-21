@@ -39,16 +39,13 @@ export async function init() {
   await getValidToken();
 }
 
-export async function searchTrack(query: string) {
-  return apiFetch<{ tracks: { items: any[] } }>(
-    `search?q=${encodeURIComponent(query)}&type=track&limit=10`
-  );
-}
-
-export async function searchAlbum(query: string) {
-  return apiFetch<{ albums: { items: any[] } }>(
-    `search?q=${encodeURIComponent(query)}&type=album&limit=10`
-  );
+export async function search<T>(
+  query: string,
+  types: string | string[] = ["track", "album", "artist"]
+): Promise<T> {
+  const typeString = Array.isArray(types) ? types.join(",") : types;
+  const params = `q=${encodeURIComponent(query)}&type=${typeString}&limit=10`;
+  return apiFetch<T>(`search?${params}`);
 }
 
 export async function getTrackById(id: string) {
@@ -61,8 +58,7 @@ export async function getAlbumById(id: string) {
 
 export default {
   init,
-  searchTrack,
-  searchAlbum,
+  search,
   getTrackById,
   getAlbumById,
 };

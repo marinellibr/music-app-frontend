@@ -66,8 +66,8 @@ export default function PostComponent({ posts }: Props) {
 
   return (
     <div className="posts-container">
-      {mediaPosts.map((post) => (
-        <div key={post.mediaId} className="post-card">
+      {mediaPosts.map((post, index) => (
+        <div key={post.mediaId + index} className="post-card">
           <img
             src={post.mediaCoverUrl || ""}
             alt={post.mediaName || ""}

@@ -3,15 +3,7 @@ import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
 import Profile from "./pages/profile/profile";
 import "./App.css";
 import spotifyService from "./services/spotifyService";
-
-function Search() {
-  return (
-    <div style={{ padding: 24 }}>
-      <h1>Search</h1>
-      <p>Página de busca (placeholder).</p>
-    </div>
-  );
-}
+import Search from "./pages/search/search";
 
 function Review() {
   return (
