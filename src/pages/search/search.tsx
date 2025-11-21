@@ -53,9 +53,7 @@ export default function Search() {
       ]);
       setSearchResults(results);
     } catch (err) {
-      setError(
-        "Não foi possível realizar a busca. Verifique a conexão com a API."
-      );
+      setError("Unable to perform search. Please check your API connection.");
       setSearchResults(null);
     } finally {
       setIsLoading(false);
@@ -108,7 +106,7 @@ export default function Search() {
               >
                 <img
                   src={track.album.images[0]?.url || "placeholder.png"}
-                  alt={`Capa do álbum`}
+                  alt={`Album cover`}
                   className="search-item-image"
                 />
 

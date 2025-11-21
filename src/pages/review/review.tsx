@@ -33,10 +33,10 @@ export default function Review() {
       if (storedUserId) {
         setUserId(storedUserId);
       } else {
-        console.warn("userId não encontrado no localStorage.");
+        console.warn("userId not found in localStorage.");
       }
     } catch (e) {
-      console.error("Erro ao acessar o localStorage para userId:", e);
+      console.error("Error accessing localStorage for userId:", e);
     }
 
     if (id) {
@@ -45,7 +45,7 @@ export default function Review() {
           const results = await getTrackById(id);
           setSelectedTrack(results);
         } catch (error) {
-          console.error("Erro ao buscar detalhes da mídia:", error);
+          console.error("Error fetching media details:", error);
         }
       };
       fetchMediaDetails();
@@ -75,12 +75,12 @@ export default function Review() {
 
   const handleSubmit = async () => {
     if (!id) {
-      alert("Erro: Mídia não identificada.");
+      alert("Error: Media not identified.");
       return;
     }
 
     if (!userId) {
-      alert("Você precisa estar logado para fazer uma review.");
+      alert("You need to be logged in to write a review.");
       return;
     }
 
@@ -100,8 +100,8 @@ export default function Review() {
       await createUserPost(userId, reviewData);
       navigate("/profile");
     } catch (error) {
-      console.error("Falha ao enviar review:", error);
-      alert("Ocorreu um erro ao salvar sua review. Tente novamente.");
+      console.error("Failed to submit review:", error);
+      alert("An error occurred while saving your review. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -136,7 +136,7 @@ export default function Review() {
               <div>
                 <img
                   src={isFavorite ? heartFilled : heartEmpty}
-                  alt="Favoritar"
+                  alt="Like"
                   onClick={handleFavoriteToggle}
                   style={{ cursor: "pointer" }}
                 />
