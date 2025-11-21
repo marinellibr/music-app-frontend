@@ -1,17 +1,18 @@
 {
   "files": {
-    "main.css": "/music-app-frontend/static/css/main.abca3e0c.css",
-    "main.js": "/music-app-frontend/static/js/main.c56731b1.js",
+    "main.css": "/music-app-frontend/static/css/main.42646ee0.css",
+    "main.js": "/music-app-frontend/static/js/main.8bd25200.js",
     "static/js/453.e5904ec0.chunk.js": "/music-app-frontend/static/js/453.e5904ec0.chunk.js",
+    "static/media/refreshPurple.svg": "/music-app-frontend/static/media/refreshPurple.092c6de445b1115b12a60134b6d82f60.svg",
     "index.html": "/music-app-frontend/index.html",
     "static/media/heartEmpty.svg": "/music-app-frontend/static/media/heartEmpty.ce7d2b9634af977721f3610dc6178d52.svg",
     "static/media/heartFilled.svg": "/music-app-frontend/static/media/heartFilled.cb1bc05fceec01022800c90746b9d720.svg",
-    "main.abca3e0c.css.map": "/music-app-frontend/static/css/main.abca3e0c.css.map",
-    "main.c56731b1.js.map": "/music-app-frontend/static/js/main.c56731b1.js.map",
+    "main.42646ee0.css.map": "/music-app-frontend/static/css/main.42646ee0.css.map",
+    "main.8bd25200.js.map": "/music-app-frontend/static/js/main.8bd25200.js.map",
     "453.e5904ec0.chunk.js.map": "/music-app-frontend/static/js/453.e5904ec0.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.abca3e0c.css",
-    "static/js/main.c56731b1.js"
+    "static/css/main.42646ee0.css",
+    "static/js/main.8bd25200.js"
   ]
 }
