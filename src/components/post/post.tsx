@@ -28,7 +28,7 @@ export default function PostComponent({ posts }: Props) {
 
         setMediaPosts(results);
       } catch (err) {
-        console.error("Erro ao carregar posts com mídia:", err);
+        console.error("Error fetching posts with media details: ", err);
         setMediaPosts(posts as Media[]);
       } finally {
         setLoading(false);
@@ -38,7 +38,7 @@ export default function PostComponent({ posts }: Props) {
     loadMedia();
   }, [posts]);
 
-  if (loading) return <div>Carregando posts...</div>;
+  if (loading) return <div>Loading posts...</div>;
 
   return (
     <div className="posts-container">

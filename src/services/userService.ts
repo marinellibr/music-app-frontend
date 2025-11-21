@@ -14,7 +14,7 @@ export async function getUserById(id: string): Promise<User> {
     const res = await fetch(urlUser);
 
     if (!res.ok) {
-      throw new Error(`HTTP ${res.status} - Erro ao buscar usuário`);
+      throw new Error(`HTTP ${res.status} - Error fetching user data`);
     }
 
     const data: User = await res.json();
@@ -92,7 +92,7 @@ export async function createUserPost(
     if (!res.ok) {
       const errorData = await res.json().catch(() => ({}));
       throw new Error(
-        `HTTP ${res.status} - ${errorData.error || "Erro ao criar post"}`
+        `HTTP ${res.status} - ${errorData.error || "Error creating post"}`
       );
     }
 

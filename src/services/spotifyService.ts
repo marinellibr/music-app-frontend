@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 let cachedToken: string | null = null;
 let tokenExpiration = 0;
 
@@ -29,7 +30,9 @@ async function apiFetch<T>(endpoint: string): Promise<T> {
 
   if (!response.ok) {
     const error = await response.json().catch(() => ({}));
-    throw new Error(error.error?.message || "Erro ao acessar a API do Spotify");
+    throw new Error(
+      error.error?.message || "Error fetching data from Spotify API"
+    );
   }
 
   return response.json();

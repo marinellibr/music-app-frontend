@@ -14,9 +14,9 @@ export default function Profile() {
 
     try {
       localStorage.setItem("userId", id);
-      console.log(`ID do usuário salvo no localStorage: ${id}`);
+      console.log(`user ID saved to localStorage: ${id}`);
     } catch (e) {
-      console.error("Erro ao salvar o userId no localStorage:", e);
+      console.error("Error saving userId to localStorage:", e);
     }
 
     let mounted = true;
@@ -31,7 +31,7 @@ export default function Profile() {
         }
       } catch (err) {
         const message = err instanceof Error ? err.message : String(err);
-        console.error("Erro ao carregar usuário:", err);
+        console.error("Error loading user:", err);
         if (mounted) setError(message);
       }
     }
@@ -49,9 +49,9 @@ export default function Profile() {
         <section className="profile--header">
           <div className="profile--info">
             {error ? (
-              <div className="error">Erro: {error}</div>
+              <div className="error">Error: {error}</div>
             ) : (
-              <div>Carregando...</div>
+              <div>Loading...</div>
             )}
           </div>
         </section>
@@ -62,7 +62,7 @@ export default function Profile() {
   return (
     <div className="profile--container">
       <section className="profile--header">
-        <img src={user.profilePictureUrl} alt="Profile Picture" />
+        <img src={user.profilePictureUrl} alt="Profile" />
         <div className="profile--info">
           <h1>{user.username}</h1>
           <h2>{user.name}</h2>
