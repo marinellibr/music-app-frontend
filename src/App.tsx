@@ -1,35 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
 import Profile from "./pages/profile/profile";
 import "./App.css";
-
-function Search() {
-  return (
-    <div style={{ padding: 24 }}>
-      <h1>Search</h1>
-      <p>Página de busca (placeholder).</p>
-    </div>
-  );
-}
-
-function Review() {
-  return (
-    <div style={{ padding: 24 }}>
-      <h1>Review</h1>
-      <p>Página de review (placeholder).</p>
-    </div>
-  );
-}
+import spotifyService from "./services/spotifyService";
+import Search from "./pages/search/search";
+import Review from "./pages/review/review";
 
 const App: React.FC = () => {
+  useEffect(() => {
+    spotifyService.init();
+  }, []);
   return (
     <BrowserRouter>
       <nav
         style={{
-          padding: 12,
+          position: "fixed",
+          bottom: 0,
+          left: 0,
+          width: "100%",
+          padding: "12px 0",
           display: "flex",
-          gap: 12,
-          borderBottom: "1px solid rgba(255,255,255,0.05)",
+          justifyContent: "center",
+          gap: 24,
+          borderTop: "1px solid rgba(255,255,255,0.1)",
+          zIndex: 1000,
         }}
       >
         <Link to="/profile">Profile</Link>
@@ -40,7 +34,7 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/profile" element={<Profile />} />
         <Route path="/search" element={<Search />} />
-        <Route path="/review" element={<Review />} />
+        <Route path="/review/:media/:id?" element={<Review />} />
         <Route path="/" element={<Navigate to="/profile" replace />} />
         <Route
           path="*"
