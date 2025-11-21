@@ -22,6 +22,11 @@
   border-radius: 2px;
 }
 
+.post-icon {
+  width: 24px;
+  height: 21px;
+}
+
 .post-info {
   flex: 1;
 }

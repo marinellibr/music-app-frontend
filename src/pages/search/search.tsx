@@ -72,8 +72,8 @@ export default function Search() {
     return new Date(dateString).getFullYear().toString();
   };
 
-  const handleItemClick = (mediaId: string) => {
-    navigate(`/review/${mediaId}`);
+  const handleItemClick = (mediaType: string, mediaId: string) => {
+    navigate(`/review/${mediaType}/${mediaId}`);
   };
 
   const tracks = searchResults?.tracks?.items || [];
@@ -104,7 +104,7 @@ export default function Search() {
             <div key={track.id}>
               <div
                 className="search-item"
-                onClick={() => handleItemClick(track.id)}
+                onClick={() => handleItemClick("track", track.id)}
               >
                 <img
                   src={track.album.images[0]?.url || "placeholder.png"}

@@ -1,41 +1,43 @@
 import React, { useEffect, useState } from "react";
 import "./profile.css";
 import { User } from "../../models/user.model";
-import { UserMock } from "../../mocks/user.mock";
 import PostComponent from "../../components/post/post";
+import { getUserById } from "../../services/userService";
 
 export default function Profile() {
   const [user, setUser] = useState<User | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // const id = "691555322217fbbfe1c7677d";
     const id = "691f7a7f249f12125fd1b4f2";
-    const base = process.env.REACT_APP_ENDPOINT_API || "";
-    const urlUser = `${base}/users/${id}`;
+    // const id = "691555322217fbbfe1c7677e";
+
+    try {
+      localStorage.setItem("userId", id);
+      console.log(`ID do usuário salvo no localStorage: ${id}`);
+    } catch (e) {
+      console.error("Erro ao salvar o userId no localStorage:", e);
+    }
 
     let mounted = true;
 
-    async function fetchUser() {
+    async function loadUser() {
       try {
-        const res = await fetch(urlUser);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data: User = await res.json();
-        console.log("Fetch URL:", urlUser);
-        console.log("User data:", data);
-        if (mounted) setUser(data);
+        const data = await getUserById(id);
+
+        if (mounted) {
+          setUser(data);
+          setError(null);
+        }
       } catch (err) {
         const message = err instanceof Error ? err.message : String(err);
-        console.error("Fetch error:", err);
+        console.error("Erro ao carregar usuário:", err);
         if (mounted) setError(message);
-
-        const mock = UserMock;
-        setUser(mock);
-        console.log("Using mock user data:", mock);
       }
     }
 
-    fetchUser();
+    loadUser();
+
     return () => {
       mounted = false;
     };

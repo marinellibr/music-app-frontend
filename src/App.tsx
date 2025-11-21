@@ -4,15 +4,7 @@ import Profile from "./pages/profile/profile";
 import "./App.css";
 import spotifyService from "./services/spotifyService";
 import Search from "./pages/search/search";
-
-function Review() {
-  return (
-    <div style={{ padding: 24 }}>
-      <h1>Review</h1>
-      <p>Página de review (placeholder).</p>
-    </div>
-  );
-}
+import Review from "./pages/review/review";
 
 const App: React.FC = () => {
   useEffect(() => {
@@ -42,7 +34,7 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/profile" element={<Profile />} />
         <Route path="/search" element={<Search />} />
-        <Route path="/review" element={<Review />} />
+        <Route path="/review/:media/:id?" element={<Review />} />
         <Route path="/" element={<Navigate to="/profile" replace />} />
         <Route
           path="*"

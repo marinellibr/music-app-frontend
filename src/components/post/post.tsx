@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Post } from "../../models/user.model";
 import { Media } from "../../models/media.model";
-import spotifyService from "../../services/spotifyService";
+import { loadPostsWithMediaDetails } from "../../services/userService";
+
 import heartFilled from "../../assets/svg/heartFilled.svg";
 import "./post.css";
 
@@ -15,45 +16,20 @@ export default function PostComponent({ posts }: Props) {
 
   useEffect(() => {
     async function loadMedia() {
+      if (posts.length === 0) {
+        setLoading(false);
+        setMediaPosts([]);
+        return;
+      }
+
+      setLoading(true);
       try {
-        const flatPosts = posts.flat();
-        const results: Media[] = await Promise.all(
-          flatPosts.map(async (post) => {
-            if (!post.mediaType) return { ...post } as Media;
-
-            let mediaData: any;
-
-            if (post.mediaType === "track") {
-              mediaData = await spotifyService.getTrackById(post.mediaId);
-              return {
-                ...post,
-                mediaName: mediaData.name || "",
-                mediaArtist:
-                  mediaData.artists?.map((a: any) => a.name).join(", ") || "",
-                mediaCoverUrl: mediaData.album?.images[0]?.url || "",
-                mediaYear: mediaData.album?.release_date?.split("-")[0] || "",
-                mediaLink: mediaData.external_urls?.spotify || "",
-              };
-            } else if (post.mediaType === "album") {
-              mediaData = await spotifyService.getAlbumById(post.mediaId);
-              return {
-                ...post,
-                mediaName: mediaData.name || "",
-                mediaArtist:
-                  mediaData.artists?.map((a: any) => a.name).join(", ") || "",
-                mediaCoverUrl: mediaData.images[0]?.url || "",
-                mediaYear: mediaData.release_date?.split("-")[0] || "",
-                mediaLink: mediaData.external_urls?.spotify || "",
-              };
-            }
-
-            return { ...post } as Media;
-          })
-        );
+        const results = await loadPostsWithMediaDetails(posts);
 
         setMediaPosts(results);
       } catch (err) {
         console.error("Erro ao carregar posts com mídia:", err);
+        setMediaPosts(posts as Media[]);
       } finally {
         setLoading(false);
       }
@@ -77,7 +53,9 @@ export default function PostComponent({ posts }: Props) {
             <div className="post-header">
               <h3 className="post-title">{post.mediaName || "Sem título"}</h3>
               <div className="post-icons">
-                {post.liked && <img src={heartFilled} alt="Liked" />}
+                {post.liked && (
+                  <img className="post-icon" src={heartFilled} alt="Liked" />
+                )}
                 <span className="post-rating">
                   {post.rating?.toFixed(1) || "0.0"}
                 </span>
