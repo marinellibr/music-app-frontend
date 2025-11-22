@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./search.css";
 import { search } from "../../services/spotifyService";
@@ -27,24 +27,23 @@ export default function Search() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
+  const debounceRef = useRef<number | null>(null);
 
   useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      if (searchTerm.trim()) {
-        performSearch(searchTerm);
-      } else {
-        setSearchResults(null);
-        setError(null);
-        setHasSearched(false);
-      }
-    }, 500);
+    const savedTerm = localStorage.getItem("searchTerm");
+    const savedResults = localStorage.getItem("searchResults");
 
-    return () => clearTimeout(delayDebounceFn);
-  }, [searchTerm]);
+    if (savedTerm) setSearchTerm(savedTerm);
+    if (savedResults) {
+      setSearchResults(JSON.parse(savedResults));
+      setHasSearched(true);
+    }
+  }, []);
 
   const performSearch = async (query: string) => {
     setIsLoading(true);
     setError(null);
+
     try {
       const results = await search<SearchResult>(query, [
         "track",
@@ -52,7 +51,8 @@ export default function Search() {
         "artist",
       ]);
       setSearchResults(results);
-    } catch (err) {
+      localStorage.setItem("searchResults", JSON.stringify(results));
+    } catch {
       setError("Unable to perform search. Please check your API connection.");
       setSearchResults(null);
     } finally {
@@ -61,8 +61,27 @@ export default function Search() {
     }
   };
 
+  const debouncedSearch = (value: string) => {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+
+    debounceRef.current = window.setTimeout(() => {
+      if (value.trim().length > 0) {
+        performSearch(value);
+        localStorage.setItem("searchTerm", value);
+      } else {
+        setSearchResults(null);
+        setError(null);
+        setHasSearched(false);
+      }
+    }, 500);
+  };
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
+    const value = event.target.value;
+    setSearchTerm(value);
+    debouncedSearch(value);
   };
 
   const getYear = (dateString: string) => {
@@ -82,7 +101,6 @@ export default function Search() {
 
       <input
         type="text"
-        placeholder=""
         value={searchTerm}
         onChange={handleInputChange}
         className="search-input"
@@ -106,13 +124,11 @@ export default function Search() {
               >
                 <img
                   src={track.album.images[0]?.url || "placeholder.png"}
-                  alt={`Album cover`}
+                  alt="Album cover"
                   className="search-item-image"
                 />
-
                 <div>
                   <div className="search-item-title">{track.name}</div>
-
                   <div className="search-item-details">
                     {track.artists[0]?.name} •{" "}
                     {getYear(track.album.release_date)}
